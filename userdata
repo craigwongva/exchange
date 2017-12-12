@@ -14,16 +14,19 @@ docker-compose --version &> $TMP-1600
 sudo mkdir /opt/boundless &> $TMP-1700
 
 cd /opt/boundless &> $TMP-1800
-
 sudo git clone https://github.com/boundlessgeo/exchange.git &> $TMP-1900
 sudo git clone https://github.com/boundlessgeo/geonode.git &> $TMP-2000
+
+cd /opt/boundless/geonode &> $TMP-2050
 sudo git checkout exchange/1.3.1 &> $TMP-2100
+
+cd /opt/boundless
 sudo git clone https://github.com/boundlessgeo/MapLoom.git &> $TMP-2200
 
-
+cd /home/ec2-user &> $TMP-2220
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
-sudo yum install nodejs –y &> $TMP-2300
-sudo yum install gcc-c++ make –y &> $TMP-2400
+sudo yum install -y nodejs &> $TMP-2300
+sudo yum install -y gcc-c++ make  &> $TMP-2400
 
 npm –v &> $TMP-3000
 

@@ -12,3 +12,9 @@ Resources:
         -
           Key: Name
           Value: craigexchange
+      UserData:
+        Fn::Base64: !Sub |     # No more Fn::Join needed
+          #!/bin/bash
+          yum install git -y
+          sudo -u ec2-user bash -c 'cd /home/ec2-user; git clone https://github.com/craigwongva/exchange.git > /tmp/u10 2>&1 '
+          sudo -u ec2-user bash -c '/home/ec2-user/exchange/userdata > /tmp/u20 2>&1 '
