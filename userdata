@@ -2,14 +2,14 @@ TMP=/tmp/userdata
 
 #sudo cp /home/ec2-user/pfeiffer4building/rc.local /etc/rc.d/rc.local &> $TMP-0900
 
-#cd /home/ec2-user &> $TMP-1000
+cd /home/ec2-user &> $TMP-1000
 
 sudo yum install docker -y &> $TMP-1100
 docker -v &> $TMP-1200
 sudo service docker start &> $TMP-1300
 sudo curl -L https://github.com/docker/compose/releases/download/1.17.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose &> $TMP-1400
 sudo chmod +x /usr/local/bin/docker-compose &> $TMP-1500
-docker-compose --version &> $TMP-1600
+/usr/local/bin/docker-compose --version &> $TMP-1600
 
 sudo mkdir /opt/boundless &> $TMP-1700
 
@@ -33,8 +33,24 @@ npm –v &> $TMP-3000
 cd /opt/boundless/MapLoom &> $TMP-3100
 sudo npm install &> $TMP-3200
 sudo npm install -g bower &> $TMP-3300
-sudo npm install –g grunt &> $TMP-3400
+sudo npm install -g grunt &> $TMP-3300
 
+sudo sed -i "s/bower cache clean/bower cache clean --allow-root/" clean-build &> $TMP-3500
+sudo sed -i "s/bower install/bower install --allow-root/" clean-build &> $TMP-3600
+sudo ./clean-build &> $TMP-3700
 
-sed -i "s/bower cache clean/bower cache clean --allow-root1/" clean-build &> $TMP-3500
+sudo sed -i "s/GEONODE_HOME=.*$/GEONODE_HOME=\/opt\/boundless\/geonode/" /opt/boundless/exchange/.env
+sudo sed -i "s/EXCHANGE_HOME=.*$/EXCHANGE_HOME=\/opt\/boundless\/exchange/" /opt/boundless/exchange/.env
+sudo sed -i "s/MAPLOOM_HOME=.*$/MAPLOOM_HOME=\/opt\/boundless\/MapLoom/" /opt/boundless/exchange/.env
 
+cd /opt/boundless/exchange
+sudo mkdir -p .storage/nearsight
+
+cat <<- EOF >> settings1
+#
+export NEARSIGHT_ENABLED=True
+export NEARSIGHT_UPLOAD_PATH=/opt/boundless/exchange/.storage/nearsight
+export NEARSIGHT_GEONODE_RESTRICTIONS='Classification: UNCLASSIFIED//FOUO. The government acknowledges and agrees that the contractor data is confidential and highly proprietary and that disclosure thereof in inappropriate circumstances could put contractor personnel at enhanced risk of harm. The government may use the contractor data solely in furtherance of the exercise of the government’s rights in DFARS252.227-7015. The government shall strictly maintain the confidentiality of the data using the highest available degree of care. Any foreigngovernment disclosure requires advance written notice and written consent by the contractor. The government will use its best possible efforts to prevent any unauthorized use or disclosure of the data; (ii) notify the contractor in writing immediately upon discovery of any actual, suspected, or threatened unauthorized use or disclosure (the contractor shall treat as highly confidential all disclosed information in connection therewith); and (iii) cooperate with the contractor in every reasonable way to regain possession of the data and to prevent further unauthorized use and disclosure thereof. The contractor and the government represents and warrants to the other that: (i) it has all requisite power and authority to execute and deliver this Agreement and to perform its obligations hereunder; and (ii) the execution, delivery, and performance of this Agreement shall not conflict with its charter, bylaws, or statutory authority, as the case may be, or with any agreement, order, or judgment by which it is bound. Each Party acknowledges and agrees that the other Party makes no representations, warranties, or covenants related to the subject matter hereof that are not expressly set forth herein. In no event shall the contractor be liable to licensee for any indirect, incidental, consequential, punitive, or other special damages.'
+EOF
+sudo cat /opt/boundless/exchange/docker/home/settings.sh settings1 > settings2
+sudo cp settings2 /opt/boundless/exchange/docker/home/settings.sh
