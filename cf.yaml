@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: oregonkeypair
+      SecurityGroupIds:
+      - sg-d9c9dca0
+      InstanceType: t2.micro
+      ImageId: ami-bf4193c7
+      Tags:
+        -
+          Key: Name
+          Value: craigexchange
