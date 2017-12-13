@@ -56,3 +56,5 @@ export NEARSIGHT_GEONODE_RESTRICTIONS='Classification: UNCLASSIFIED//FOUO. The g
 EOF
 sudo cat /opt/boundless/exchange/docker/home/settings.sh settings1 > settings2 #intentionally omit output redirect
 sudo cp settings2 /opt/boundless/exchange/docker/home/settings.sh &> $TMP-4500
+
+sudo usermod -aG docker ec2-user
