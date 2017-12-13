@@ -57,4 +57,12 @@ EOF
 sudo cat /opt/boundless/exchange/docker/home/settings.sh settings1 > settings2 #intentionally omit output redirect
 sudo cp settings2 /opt/boundless/exchange/docker/home/settings.sh &> $TMP-4500
 
-sudo usermod -aG docker ec2-user
+sudo usermod -aG docker ec2-user &> $TMP-4600
+
+cd /opt/boundless/exchange &> $TMP-4700
+
+docker-compose up &> $TMP-4800
+
+echo "Beyond docker-compose" &> $TMP-4900
+
+
