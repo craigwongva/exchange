@@ -6,7 +6,7 @@ Resources:
       KeyName: oregonkeypair
       SecurityGroupIds:
       - sg-d9c9dca0
-      InstanceType: t2.micro
+      InstanceType: t2.large
       ImageId: ami-bf4193c7
       Tags:
         -
